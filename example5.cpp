@@ -8,56 +8,67 @@
 using namespace std;
 
 class X {
-    private:
-        int test;
-        char* str;
-    public:
-        //Default constructor
-        X() : str(NULL) { cout << "Default Constructor" << endl; }
+private:
+  int test;
+  char *str;
 
-        //Copy constructor
-        X(const X& lVal) : X(lVal.str) { cout << "Copy Constructor" <<endl; }
+public:
+  // Default constructor
+  X() : str(NULL) { cout << "Default Constructor" << endl; }
 
-        //This is the copy assignment operator
-        X& operator=(const X& lVal) { cout << "Copy assignment operator" << endl; return *this = lVal.str; }
+  // Copy constructor
+  X(const X &lVal) : X(lVal.str) { cout << "Copy Constructor" << endl; }
 
-        //Destructor
-        ~X() { cout << "Destructor" << endl; if (str) delete[] str; }
+  // This is the copy assignment operator
+  X &operator=(const X &lVal) {
+    cout << "Copy assignment operator" << endl;
+    return *this = lVal.str;
+  }
 
-        //Move constructor
-        X(X&& rVal) {
-                cout << "Move constructor" << endl;
-                this->str = rVal.str; //Shallow copy
-                rVal.str = NULL; //Important - set to null otherwise rVal destructor will destroy heap
-        }
+  // Destructor
+  ~X() {
+    cout << "Destructor" << endl;
+    if (str)
+      delete[] str;
+  }
 
-        //----- Rule Of "5" Ends Here -----//
+  // Move constructor
+  X(X &&rVal) {
+    cout << "Move constructor" << endl;
+    this->str = rVal.str; // Shallow copy
+    rVal.str = NULL; // Important - set to null otherwise rVal destructor will
+                     // destroy heap
+  }
 
-        //Overloaded constructor
-        X(const char* lVal) : X() {
-                cout << "Overloaded constructor: X(const char* lVal)" << endl;
-                *this = lVal;
-        }
+  //----- Rule Of "5" Ends Here -----//
 
-        //Assignment operator (Note: This is not the copy assignment operator)
-        X& operator=(const char* str) {
-                cout << "Assignment operator overloaded operator=(const char* str) " << str << endl;
+  // Overloaded constructor
+  X(const char *lVal) : X() {
+    cout << "Overloaded constructor: X(const char* lVal)" << endl;
+    *this = lVal;
+  }
 
-                if (this->str) delete [] this->str;
-                this->str = new char(strlen(str));
-                for(int i=0; str[i]; this->str[i] = str[i], i++); //Deepcopy - done explicitly here as an example to contrast from shallow copy in move constructor
+  // Assignment operator (Note: This is not the copy assignment operator)
+  X &operator=(const char *str) {
+    cout << "Assignment operator overloaded operator=(const char* str) " << str
+         << endl;
 
-                return *this;
-        }
+    if (this->str)
+      delete[] this->str;
+    this->str = new char(strlen(str));
+    for (int i = 0; str[i]; this->str[i] = str[i], i++)
+      ; // Deepcopy - done explicitly here as an example to contrast from
+        // shallow copy in move constructor
 
-        const char* getStr() const { return this->str; }
+    return *this;
+  }
+
+  const char *getStr() const { return this->str; }
 };
 
-X retByVal() {
-        return X("Hello World");
-}
+X retByVal() { return X("Hello World"); }
 
 int main() {
-        X x4(retByVal());
-        return 0;
+  X x4(retByVal());
+  return 0;
 }

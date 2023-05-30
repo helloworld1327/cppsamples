@@ -1,17 +1,17 @@
-//CWE-476: Null Pointer dereference (14)
+// CWE-476: Null Pointer dereference (14)
 
-#include <iostream>
 #include <cstring>
+#include <iostream>
 using namespace std;
 
-int main(int argc, char ** argv){
+int main(int argc, char **argv) {
   char buf[255];
-  char * ptr = NULL;
-  if (argc>1) {
+  char *ptr = NULL;
+  if (argc > 1) {
     ptr = argv[1];
   }
-  strcpy(buf,ptr);
+  strcpy(buf, ptr);
   return 0;
 }
 
-//Output: Segmentation fault(core dumped)
+// Output: Segmentation fault(core dumped)
